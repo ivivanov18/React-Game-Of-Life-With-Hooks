@@ -57,3 +57,9 @@ h4 {
 h4 {
   margin-top: 0px;
 }
+
+button {
+  padding: 10px;
+  margin: 10px;
+  width: 10%;
+}

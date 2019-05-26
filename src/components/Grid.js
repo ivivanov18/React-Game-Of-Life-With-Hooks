@@ -18,8 +18,8 @@ function renderBox(data, i, j, selectBox) {
 }
 
 function Grid({ cols, rows, data, selectBox }) {
-  const width = cols * 14;
-
+  const width = cols * 16 + 1;
+  console.log({ rows, cols });
   return (
     <div className="grid" style={{ width: width }}>
       {data.map((row, i) =>
