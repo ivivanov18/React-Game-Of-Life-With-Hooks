@@ -3,9 +3,7 @@ import React, { useState, useRef } from "react";
 import Controls from "./Controls";
 import Grid from "./Grid";
 
-const cloneArray = arr => {
-  return JSON.parse(JSON.stringify(arr));
-};
+import { cloneArray } from "../helpers";
 
 /**
  * Main Component that is going to be rendered in App and that is going to
@@ -37,11 +35,24 @@ function Main() {
     );
   };
 
+  const seed = () => {
+    const duplicateArray = grid.map(row =>
+      row.map(elt => {
+        if (Math.floor(Math.random() * 4) === 1) {
+          return true;
+        } else {
+          return false;
+        }
+      })
+    );
+    setGrid(duplicateArray);
+  };
+
   return (
     <React.Fragment>
       <div style={{ color: "white" }}>Renders{renders.current++}</div>
       <h1>React Game Of Life with Hooks</h1>
-      <Controls selectDimensions={selectDimensions} />
+      <Controls selectDimensions={selectDimensions} onSeed={() => seed()} />
       <div style={{ color: "white" }}>
         Rows:{dimGrid[0]}/Cols:{dimGrid[1]}
       </div>
