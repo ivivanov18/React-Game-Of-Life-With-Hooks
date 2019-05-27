@@ -21,7 +21,7 @@ function Selection({ name, dimensions, selectDimensions }) {
   );
 }
 
-function Controls({ selectDimensions }) {
+function Controls({ selectDimensions, onSeed }) {
   return (
     <div className="center">
       <Button name="Play" />
@@ -29,7 +29,7 @@ function Controls({ selectDimensions }) {
       <Button name="Clear" />
       <Button name="Slow" />
       <Button name="Fast" />
-      <Button name="Seed" />
+      <Button name="Seed" func={onSeed} />
       <Selection
         name="Grid Dimensions"
         dimensions={[[10, 20], [30, 50], [50, 70]]}
