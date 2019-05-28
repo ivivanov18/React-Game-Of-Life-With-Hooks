@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 
 import Controls from "./Controls";
 import Grid from "./Grid";
@@ -12,31 +12,19 @@ import { cloneArray, initNestedArray } from "../helpers";
 function Main() {
   const [dimGrid, setDimGrid] = useState([30, 50]); // [rows, cols]
   const [generation, setGeneration] = useState(0);
-  const [speed, setSpeed] = useState(100);
+  const [speed, setSpeed] = useState(500);
   const [isPlaying, setIsPlaying] = useState(false);
   const [grid, setGrid] = useState(
     initNestedArray(dimGrid[0], dimGrid[1], false)
   );
   const renders = useRef(0);
 
-  const play = () => {
-    console.log("play");
-    setIsPlaying(true);
-  };
-
-  const pause = () => {
-    setIsPlaying(false);
-  };
-
-  const clear = () => {
-    setIsPlaying(false);
-    setGrid(
-      Array(dimGrid[0])
-        .fill()
-        .map(() => Array(dimGrid[1]).fill(false))
-    );
-  };
-
+  /**
+   * Main function that calculates the numbers of cells that will survice
+   * for the next generation
+   * as is from
+   * https://github.com/beaucarnes/fcc-project-tutorials/tree/master/gameoflife
+   */
   const playGame = () => {
     const rows = dimGrid[0];
     const cols = dimGrid[1];
@@ -61,14 +49,17 @@ function Main() {
     setGrid(cloneGrid);
   };
 
+  /**
+   *
+   */
   useEffect(() => {
     if (isPlaying) {
       const interval = setInterval(() => {
         playGame();
-      }, 10);
+      }, speed);
       return () => clearInterval(interval);
     }
-  }, [playGame]);
+  });
 
   const selectBox = (row, col) => {
     const gridCopy = grid.slice();
@@ -78,11 +69,7 @@ function Main() {
 
   const selectDimensions = dimensions => {
     setDimGrid(dimensions);
-    setGrid(
-      Array(dimensions[0])
-        .fill()
-        .map(() => Array(dimensions[1]).fill(false))
-    );
+    setGrid(initNestedArray(dimensions[0], dimensions[1], false));
   };
 
   const seed = () => {
@@ -98,15 +85,41 @@ function Main() {
     setGrid(duplicateArray);
   };
 
+  const play = () => {
+    setIsPlaying(true);
+  };
+
+  const pause = () => {
+    setIsPlaying(false);
+    console.log({ generation });
+  };
+
+  const clear = () => {
+    setIsPlaying(false);
+    setGrid(initNestedArray(dimGrid[0], dimGrid[1], false));
+    setGeneration(0);
+  };
+
+  const slow = () => {
+    setSpeed(500);
+  };
+
+  const fast = () => {
+    setSpeed(10);
+  };
+
   return (
     <React.Fragment>
       <div style={{ color: "white" }}>Renders{renders.current++}</div>
       <h1>React Game Of Life with Hooks</h1>
       <Controls
         selectDimensions={selectDimensions}
-        onSeed={() => seed()}
-        onPlay={() => play()}
-        onPause={() => pause()}
+        onSeed={useCallback(() => seed())}
+        onPlay={useCallback(() => play())}
+        onPause={useCallback(() => pause())}
+        onClear={useCallback(() => clear())}
+        onFast={useCallback(() => fast())}
+        onSlow={useCallback(() => slow())}
       />
       <div style={{ color: "white" }}>
         Rows:{dimGrid[0]}/Cols:{dimGrid[1]}
@@ -117,7 +130,8 @@ function Main() {
         cols={dimGrid[1]}
         selectBox={selectBox}
       />
-      <h2>Generation: {generation}</h2>
+      <h2>Generation: {generation} </h2>
+      <h3>(Rendered times: {renders.current++})</h3>
     </React.Fragment>
   );
 }

@@ -21,14 +21,22 @@ function Selection({ name, dimensions, selectDimensions }) {
   );
 }
 
-function Controls({ selectDimensions, onSeed, onPlay, onPause }) {
+function Controls({
+  selectDimensions,
+  onSeed,
+  onPlay,
+  onPause,
+  onClear,
+  onSlow,
+  onFast
+}) {
   return (
     <div className="center">
       <Button name="Play" func={onPlay} />
       <Button name="Pause" func={onPause} />
-      <Button name="Clear" />
-      <Button name="Slow" />
-      <Button name="Fast" />
+      <Button name="Clear" func={onClear} />
+      <Button name="Slow" func={onSlow} />
+      <Button name="Fast" func={onFast} />
       <Button name="Seed" func={onSeed} />
       <Selection
         name="Grid Dimensions"
