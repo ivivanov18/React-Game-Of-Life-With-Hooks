@@ -10,7 +10,7 @@ function renderBox(data, i, j, selectBox) {
       row={i}
       col={j}
       key={boxId}
-      boxId={boxId}
+      id={boxId}
       boxClass={boxClass}
       selectBox={selectBox}
     />

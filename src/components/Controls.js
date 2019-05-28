@@ -13,7 +13,7 @@ function Selection({ name, dimensions, selectDimensions }) {
   return (
     <select name={name} onChange={onSelect}>
       {dimensions.map(value => (
-        <option value={value}>
+        <option key={value} value={value}>
           {value[0]}x{value[1]}
         </option>
       ))}
@@ -21,11 +21,11 @@ function Selection({ name, dimensions, selectDimensions }) {
   );
 }
 
-function Controls({ selectDimensions, onSeed }) {
+function Controls({ selectDimensions, onSeed, onPlay, onPause }) {
   return (
     <div className="center">
-      <Button name="Play" />
-      <Button name="Pause" />
+      <Button name="Play" func={onPlay} />
+      <Button name="Pause" func={onPause} />
       <Button name="Clear" />
       <Button name="Slow" />
       <Button name="Fast" />
